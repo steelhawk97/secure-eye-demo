@@ -1,0 +1,134 @@
+<ion-header>
+    <ion-toolbar>
+
+        <ion-buttons start>
+			<button *ngIf="!edit" ion-button icon-only color="dark" (click)="closeModal()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+			<button *ngIf="edit" ion-button icon-only color="dark" (click)="editDetails()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+		</ion-buttons>
+		
+		<ion-title *ngIf="!edit">{{details?.name}}</ion-title>
+		<ion-title *ngIf="edit">Edit {{details?.name}}</ion-title>
+		
+		<ion-buttons end>
+			<button ion-button icon-only color="dark" (click)="editDetails()" small>
+				<ion-icon *ngIf="!edit" name="create"></ion-icon>
+			</button>
+		</ion-buttons>
+	
+	</ion-toolbar>
+</ion-header>
+  
+<ion-content>
+		<ion-slides>
+			<ion-slide>
+				<div *ngIf="!edit">
+					<ion-list>
+
+						<ion-item-divider>
+							Battery: {{details?.battery}}%
+						</ion-item-divider>
+						<br>
+						<ion-item *ngIf="!eye?.length">
+							No Eye assigned 
+						</ion-item> 
+						<ion-item-divider *ngIf="eye?.length">
+							Eye: {{eye[0]?.name}} 
+						</ion-item-divider>
+						<br>
+						<ion-item-divider>
+							Admins
+						</ion-item-divider> 
+						<ion-item *ngIf="admins?.length==0">
+							No Admins assigned
+						</ion-item>
+						<ion-item *ngFor="let a of admins">
+							{{a?.name}}
+						</ion-item>
+
+
+					</ion-list>
+				</div>
+				<div *ngIf="edit">
+					<ion-item-group>
+
+						<ion-item-divider>
+							Lock Name
+						</ion-item-divider> 
+						<ion-item>
+							<ion-input type="text" placeholder=" Main enterence / Garage / Extra " [(ngModel)]="editName"></ion-input>
+						</ion-item>
+
+						<ion-item-divider>
+							Eye
+						</ion-item-divider>  
+						<ion-item *ngIf="eye?.length==0 && newEyes?.length == 0">
+							No Eyes assigned
+						</ion-item>
+						<ion-item *ngFor="let a of eye">
+							<ion-label>{{a?.name}}</ion-label>
+							<ion-checkbox color="dark" checked="true" (ionChange)="updateEye(a)"></ion-checkbox>
+						</ion-item>
+						<ion-item *ngFor="let a of newEyes">
+							<ion-label>{{a?.name}}</ion-label>
+							<ion-checkbox color="dark" (ionChange)="updateEye(a)"></ion-checkbox>
+						</ion-item>
+
+						<ion-item-divider>
+							Admins
+						</ion-item-divider>  
+						<ion-item *ngIf="admins?.length==0 && newAdmins?.length == 0">
+							No Admins assigned
+						</ion-item>
+						<ion-item *ngFor="let a of admins">
+							<ion-label>{{a?.name}}</ion-label>
+							<ion-checkbox color="dark" checked="true" (ionChange)="updateAdmin(a)"></ion-checkbox>
+						</ion-item>
+						<ion-item *ngFor="let a of newAdmins">
+							<ion-label>{{a?.name}}</ion-label>
+							<ion-checkbox color="dark" (ionChange)="updateAdmin(a)"></ion-checkbox>
+						</ion-item>
+
+			
+					</ion-item-group>
+					<ion-grid>
+						<ion-row>
+							<ion-col col-6>
+								<button ion-button color="secondary" (click)='onMasterSubmit()'block>
+									Confirm Changes
+								</button>
+							</ion-col>
+							<ion-col col-6>
+								<button ion-button color="danger" (click)="onDelete()" block>
+									Remove Lock
+								</button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div>
+			</ion-slide>
+			<ion-slide>
+				<div *ngIf="success==1">
+					<p class="success"><b>{{details?.name}} Lock updated Successfully!</b></p>
+					<br/>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" *ngIf="success">
+						<circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+						<polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+					</svg>
+				</div>
+				<div *ngIf="success==2">
+					<p class="error"><b>Could Not Update Lock</b></p>
+					<br/>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+						<circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+						<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+						<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+					</svg>
+					<p class="error">Something went wrong!(complete error message)</p>
+				</div>
+			</ion-slide>
+		</ion-slides>
+</ion-content>

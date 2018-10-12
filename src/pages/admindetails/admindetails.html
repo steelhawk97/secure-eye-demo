@@ -1,0 +1,80 @@
+<ion-header>
+	<ion-toolbar>
+		<ion-buttons start>
+			<button ion-button icon-only color="dark" (click)="closeModal()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+		</ion-buttons>
+		<ion-title>Edit {{details?.name}}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-slides>
+		<ion-slide>
+			
+				<ion-item-divider>
+					Admin Name
+				</ion-item-divider> 
+				<ion-item>
+					<ion-input type="text" placeholder="Admin name" disabled="true" [(ngModel)]="editName"></ion-input>
+				</ion-item>
+
+			<ion-grid>
+					<ion-row>
+						<ion-col col-12>
+							<button ion-button color="secondary" (click)='changeSlide(true)'block>
+								Choose Locks
+							</button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+		</ion-slide>
+
+		<ion-slide>
+			<ion-item-group>
+				<ion-item-divider>
+					Locks
+				</ion-item-divider> 
+				<ion-item *ngIf="newLocks?.length == 0">
+					No Locks assigned
+				</ion-item>
+				<ion-item *ngFor="let l of newLocks">
+					<ion-label>{{l?.name}}</ion-label>
+					<ion-checkbox color="dark" (ionChange)="updateLock(l)"></ion-checkbox>
+				</ion-item>
+			</ion-item-group>
+
+			<ion-grid>
+				<ion-row>
+					<ion-col col-12>
+						<button ion-button color="secondary" (click)='onSubmit()'block>
+							Confirm Changes
+						</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+		</ion-slide>
+
+		<ion-slide>
+		<div *ngIf="success">
+			<p class="success"><b>{{details?.name}} Level Updated Successfully!</b></p>
+			<br/>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+			<circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+			<polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+			</svg>
+		</div>
+		<div *ngIf="!success">
+			<p class="error"><b>Could Not update Level</b></p>
+			<br/>
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+			<circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+			<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+			<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+			</svg>
+			<p class="error">Something went wrong!(complete error message)</p>
+		</div>
+		</ion-slide>
+	</ion-slides>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-content>
+	
+				  <ion-refresher pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+					<ion-refresher-content
+					  pullingIcon="arrow-dropdown"
+					  pullingText="Reload"
+					  refreshingSpinner="crescent"
+					  refreshingText="Reloading...">
+					</ion-refresher-content>
+				  </ion-refresher>
+        
+                  
+    <ion-fab right bottom #fab>
+        <button ion-fab style="margin-bottom : 45px" color="light" (click)="pushModal()"><ion-icon name="add"></ion-icon></button>
+	</ion-fab>
+	
+    <ion-list>
+        <ion-item-sliding *ngFor="let d of data">
+			<ion-item detail-push>
+				<h2>{{d?.name}}</h2>
+				<h4>Locks</h4>
+				<ion-row *ngIf="d?.l_id?.length">
+					<ion-col *ngFor="let l of d?.l_id" col-3>
+						<p>{{l}}</p>
+					</ion-col>
+				</ion-row>
+				<ion-row *ngIf="!d?.l_id?.length">
+					<ion-col>
+						<p>No locks assigned</p>
+					</ion-col>
+				</ion-row>
+			</ion-item>
+			<ion-item-options side="right">
+				<button ion-button color="dark" (click)="details(d)">
+					<ion-icon name="create"></ion-icon>
+					Update
+				</button>
+				<button ion-button color="danger" (click)="deleteAdmin(d)">
+					<ion-icon name="trash"></ion-icon>
+					Delete
+				</button>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
+
+</ion-content>

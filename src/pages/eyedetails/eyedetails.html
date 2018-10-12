@@ -1,0 +1,105 @@
+<ion-header>
+    <ion-toolbar>
+
+        <ion-buttons start>
+			<button *ngIf="!edit" ion-button icon-only color="dark" (click)="closeModal()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+			<button *ngIf="edit" ion-button icon-only color="dark" (click)="editDetails()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+		</ion-buttons>
+		
+		<ion-title *ngIf="!edit">{{details?.name}}</ion-title>
+		<ion-title *ngIf="edit">Edit {{details?.name}}</ion-title>
+		
+		<ion-buttons end>
+			<button ion-button icon-only color="dark" (click)="editDetails()" small>
+				<ion-icon *ngIf="!edit" name="create"></ion-icon>
+			</button>
+		</ion-buttons>
+	
+	</ion-toolbar>
+</ion-header>
+  
+<ion-content>
+		<ion-slides>
+			<ion-slide>
+				<div *ngIf="!edit">
+					<ion-list>
+						<ion-item>
+							<label>Battery: {{details?.battery}}%</label>
+						</ion-item>
+						<ion-item-divider>
+							Locks
+						</ion-item-divider>
+						<ion-item *ngIf="locks?.length==0">
+							No locks assigned
+						</ion-item>
+						<ion-item *ngFor="let l of locks">
+							{{l?.name}}
+						</ion-item>
+					</ion-list>
+				</div>
+				<div *ngIf="edit">
+					<ion-item-group>
+						<ion-item-divider>
+							Eye Name
+						</ion-item-divider> 
+						<ion-item>
+							<ion-input type="text" placeholder=" Main enterence / Garage / Extra " [(ngModel)]="editName"></ion-input>
+						</ion-item>
+						
+						<ion-item-divider>
+							Locks
+						</ion-item-divider> 
+						<ion-item *ngIf="locks?.length==0 && newLocks?.length == 0">
+							No Locks assigned
+						</ion-item>
+						<ion-item *ngFor="let l of locks">
+							<ion-label>{{l?.name}}</ion-label>
+							<ion-checkbox color="dark" checked="true" (ionChange)="updateLock(l)"></ion-checkbox>
+						</ion-item>
+						<ion-item *ngFor="let l of newLocks">
+							<ion-label>{{l?.name}}</ion-label>
+							<ion-checkbox color="dark" (ionChange)="updateLock(l)"></ion-checkbox>
+						</ion-item>
+					</ion-item-group>
+					<ion-grid>
+						<ion-row>
+							<ion-col col-6>
+								<button ion-button color="secondary" (click)='onSubmit()'block>
+									Confirm Changes
+								</button>
+							</ion-col>
+							<ion-col col-6>
+								<button ion-button color="danger" (click)="onDelete()" block>
+									Remove Eye
+								</button>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</div>
+			</ion-slide>
+			<ion-slide>
+				<div *ngIf="success">
+					<p class="success"><b>{{details?.name}} Eye {{text}} Successfully!</b></p>
+					<br/>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+						<circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+						<polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+					</svg>
+				</div>
+				<div *ngIf="!success">
+					<p class="error"><b>Could Not {{text}} Eye</b></p>
+					<br/>
+					<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+						<circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+						<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+						<line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+					</svg>
+					<p class="error">Something went wrong!(complete error message)</p>
+				</div>
+			</ion-slide>
+		</ion-slides>
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-content>
+	
+				  <ion-refresher pullMin="100" pullMax="200" (ionRefresh)="doRefresh($event)">
+					<ion-refresher-content
+					  pullingIcon="arrow-dropdown"
+					  pullingText="Reload"
+					  refreshingSpinner="crescent"
+					  refreshingText="Reloading...">
+					</ion-refresher-content>
+				  </ion-refresher>
+			
+	<ion-fab right bottom #fab>
+		<button ion-fab style="margin-bottom : 45px" color="light" ><ion-icon name="arrow-dropup"></ion-icon></button>
+		<ion-fab-list style="margin-bottom : 110px" side="top">
+			<button ion-fab (click)="pushModal(fab)"><ion-icon name="add"></ion-icon></button>
+			<button ion-fab color="bright" (click)="shop(fab)"><ion-icon name="cart"></ion-icon></button>
+		</ion-fab-list>
+	</ion-fab>
+
+	<ion-list>
+		<ion-item *ngFor="let d of data[0]?.item">
+  			<ion-thumbnail item-start>
+				<div class="positionRelative">				
+					<round-progress
+						[current]="d.battery" 
+						[max]="100" 
+						[stroke]="7" 
+						[radius]="50" 
+						[rounded]="true"
+						[color]="(d.battery > 20) ? '#32db64' : '#f53d3d'" 
+						[background]="'#eaeaea'"
+						[duration]="1000" 
+						[animation]="'easeOutCubic'"
+					></round-progress>
+					<div class="percentageValue">
+						<p>Battery</p>
+						<p>{{d.battery}}%</p>
+					</div>
+				</div>	
+			</ion-thumbnail>
+			<label>{{d.name}}</label>
+			<button ion-button clear color="dark" (click)="details(d)" item-end>View Details</button>
+  		</ion-item>
+	</ion-list>
+</ion-content>
