@@ -34,7 +34,9 @@
                 </ion-list>
             </ion-list>
 
-            <button full ion-button color="Danger" (click)="pic()">Take photo</button>
+            <ion-fab right bottom>
+                <button ion-fab (click)="presentActionSheet()"><ion-icon name="camera"></ion-icon></button>
+              </ion-fab>
                 
             <button full ion-button icon-start color="secondary" (click)="onSubmit()">
                 <ion-icon name="add"></ion-icon>

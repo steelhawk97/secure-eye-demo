@@ -21,9 +21,14 @@ import { AddeyePage } from './../pages/addeye/addeye';
 import { AddadminPage } from './../pages/addadmin/addadmin';
 import { EyedetailsPage } from './../pages/eyedetails/eyedetails';
 import { LockdetailsPage } from './../pages/lockdetails/lockdetails';
+import { UploadPage } from './../pages/upload/upload';
 import { AdmindetailsPage } from './../pages/admindetails/admindetails';
 import { ApiProvider } from '../providers/api/api';
 import { Camera } from '@ionic-native/camera';
+
+import { HttpModule } from '@angular/http';
+
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 @NgModule({
   declarations: [
@@ -40,12 +45,14 @@ import { Camera } from '@ionic-native/camera';
     AddadminPage,
     EyedetailsPage,
     LockdetailsPage,
+    UploadPage,
     AdmindetailsPage,
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     SuperTabsModule.forRoot(),
+    HttpModule,
     RoundProgressModule,
     HttpClientModule,
   ],
@@ -65,12 +72,14 @@ import { Camera } from '@ionic-native/camera';
     EyedetailsPage,
     LockdetailsPage,
     AdmindetailsPage,
+    UploadPage,
   ],
   providers: [
     StatusBar,
+    Camera,
     SplashScreen,
     BarcodeScanner,
-    Camera,
+    FileTransfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider
   ]

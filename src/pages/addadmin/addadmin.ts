@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, Slides, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Slides, AlertController,ActionSheetController, ModalController} from 'ionic-angular';
 import { ApiProvider } from './../../providers/api/api';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -19,32 +19,73 @@ export class AddadminPage {
 	public success:number = 0;  
 	public locks = [];
 
+	imageData: any;
+	
+	desc: string;
 	constructor
 		(private camera: Camera,
 		public navCtrl: NavController, 
-		public navParams: NavParams,
+		public navParams: NavParams,private actionSheetCtrl: ActionSheetController,private modalCtrl: ModalController,
 		private viewCtrl: ViewController,
 		private api: ApiProvider,
 		public alertCtrl: AlertController,
 	) {
 	}
+	saveImage() {
+		this.api.uploadImage(this.imageData, this.desc).then(res => {
+		  this.viewCtrl.dismiss({reload: true});
+		}, err => {
+			console.log(err)
+		});
+	  }
 
-	pic(){
-		const options: CameraOptions = {
-			quality: 100,
-			destinationType: this.camera.DestinationType.FILE_URI,
-			encodingType: this.camera.EncodingType.JPEG,
-			mediaType: this.camera.MediaType.PICTURE
-		  }
-		  
-		  this.camera.getPicture(options).then((imageData) => {
-		   // imageData is either a base64 encoded string or a file URI
-		   // If it's base64 (DATA_URL):
-		   let base64Image = 'data:image/jpeg;base64,' + imageData;
-		  }, (err) => {
-		   // Handle error
+	  presentActionSheet() {
+		let actionSheet = this.actionSheetCtrl.create({
+		  title: 'Select Image Source',
+		  buttons: [
+			{
+			  text: 'Load from Library',
+			  handler: () => {
+				this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+			  }
+			},
+			{
+			  text: 'Use Camera',
+			  handler: () => {
+				this.takePicture(this.camera.PictureSourceType.CAMERA);
+			  }
+			},
+			{
+			  text: 'Cancel',
+			  role: 'cancel'
+			}
+		  ]
+		});
+		actionSheet.present();
+	  }
+	 
+	  public takePicture(sourceType) {
+		// Create options for the Camera Dialog
+		var options = {
+		  quality: 100,
+		  destinationType: this.camera.DestinationType.FILE_URI,
+		  sourceType: sourceType,
+		  saveToPhotoAlbum: false,
+		  correctOrientation: true
+		};
+	 
+		// Get the data of an image
+		this.camera.getPicture(options).then((imagePath) => {
+		  let modal = this.modalCtrl.create('UploadModalPage', { data: imagePath });
+		  modal.present();
+		  modal.onDidDismiss(data => {
+			  console.log(data);
 		  });
-	}
+		}, (err) => {
+		  console.log('Error: ', err);
+		});
+	  }
+
 	ionViewDidLoad() { 
 		this.slides.lockSwipes(true);
 		console.log('ionViewDidLoad AddadminPage');

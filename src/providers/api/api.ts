@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { Basic } from './model';
 
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
@@ -16,10 +18,33 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ApiProvider {
-	private url: string = "http://localhost:3000/";
-	constructor(public http: HttpClient) {
+	private url: string = "http://192.168.43.78:3000/";
+	private imgurl: string = "http://192.168.43.78:3001/";
+	constructor(public http: HttpClient, private transfer: FileTransfer) {
 		console.log('Hello ApiProvider Provider');
 	}
+
+	uploadImage(img, desc) {
+		
+		   // Destination URL
+		   let url = this.imgurl + 'images';
+		
+		   // File for Upload
+		   var targetPath = img;
+		
+		   var options: FileUploadOptions = {
+			 fileKey: 'image',
+			 chunkedMode: false,
+			 mimeType: 'multipart/form-data',
+			 params: { 'desc': desc }
+		   };
+		
+		   const fileTransfer: FileTransferObject = this.transfer.create();
+		
+		   // Use the FileTransfer to upload the image
+		   return fileTransfer.upload(targetPath, url, options);
+		 }
+		
 
 	//master
 	public postMaster(value): Observable<Basic> {
